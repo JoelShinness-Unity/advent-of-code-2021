@@ -5,6 +5,8 @@ Here's how I'm solving the puzzles for this year's [Advent of Code](https://adve
 > CAVEAT: 
 >
 > This is not my usual coding style!  This is very fast coding, very stream-of-consciousness coding.  So there's not many comments, the style changes from day to day or even in the same file, it might not be very readable, and it might not be the most efficient code.
+>
+> Also, my lib/index.ts is an absolute dog's breakfast that I've just kept adding to.
 
 ## Libraries / Languages / Tools used
 
