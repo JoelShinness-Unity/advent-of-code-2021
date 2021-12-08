@@ -1,7 +1,6 @@
-import produce from 'immer';
-import { from, map, Observable, pairwise, reduce, scan, skipWhile, switchMap, take } from 'rxjs';
-import { add, linesFromFile, permutations, toArray, uniq } from './lib';
-
+import { from, map, Observable, reduce } from 'rxjs';
+import { add, linesFromFile, permutations } from './lib';
+import _ from 'lodash'
 
 function challenge1(lines:Observable<string>):Observable<unknown>{
   const easyLengths = [2, 3, 4, 7]
@@ -21,9 +20,6 @@ function match(str1: string, str2:string){
   if(str1.length !== str2.length) return false;
   return [...str1].sort().join('') === [...str2].sort().join('')
 }
-function intersection(str1: string, str2: string){
-  return uniq([...str1, ...str2]).join('')
-}
 function contains(big:string, little:string){
   return [...little].every(seg => big.includes(seg));
 }
@@ -35,7 +31,6 @@ function challenge2(lines:Observable<string>):Observable<unknown>{
       const [one, seven, four,,,,,,,eight] = sortedCodes;
       const fiveSeg = sortedCodes.slice(3, 6);
       const sixSeg = sortedCodes.slice(6, 9);
-      // const top = [...seven].find(seg => one.indexOf(seg) === -1)
       const isSix = (seg) => !contains(seg, one);
       const isNine = (seg) => contains(seg, four);
       const [six, nine, zero] = (() => {

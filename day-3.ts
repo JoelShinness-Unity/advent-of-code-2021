@@ -1,7 +1,4 @@
-import fs from 'fs';
-import path from 'path';
-import readline from 'readline';
-import { flatMap, from, map, Observable, publish, range, reduce, scan, share, skipWhile, take, takeWhile } from 'rxjs';
+import { from, map, Observable, scan } from 'rxjs';
 import { toArray } from './lib';
 
 
@@ -76,6 +73,7 @@ function challenge2(lines:Observable<string>):Observable<unknown>{
 }
 
 (() => {
+  // linesFromFile('./inputs/day-3.txt')
   linesFromMock().pipe(challenge2)
     .subscribe(x => { console.log(x); })
 })();
@@ -94,26 +92,4 @@ function linesFromMock():Observable<string>{
 00010
 01010`
   return from(mock.split('\n'));
-}
-
-function linesFromFile():Observable<string>{
-  return new Observable((subscriber) => {
-    const fileStream = fs.createReadStream(path.join(__dirname, './inputs/day-3.txt'));
-    const rl = readline.createInterface({
-      input: fileStream,
-      crlfDelay: Infinity
-    });
-    let completed = false;
-    (async () => {
-      for await (const line of rl){
-        subscriber.next(line)
-      }
-      subscriber.complete();
-    })();
-    return () => {
-      completed = true;
-      subscriber.complete();
-      fileStream.close();
-    }
-  });
 }

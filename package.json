@@ -17,6 +17,7 @@
   "dependencies": {
     "axios": "^0.24.0",
     "immer": "^9.0.7",
+    "lodash": "^4.17.21",
     "moment-timezone": "^0.5.34",
     "rxjs": "^7.4.0",
     "ts-node": "^10.4.0",

@@ -9,30 +9,6 @@ export async function *aMap<A,B>(items:AsyncIterable<A>, txfm:(a:A) => Promise<B
   }
 }
 
-export async function *aFilter<A>(items:AsyncIterable<A>, pred:(a:A) => Promise<boolean>|boolean):AsyncIterableIterator<A>{
-  for await(const item of items){
-    if(await pred(item)){
-      yield item;
-    }
-  }
-}
-
-export async function aReduce<A, B>(items:AsyncIterable<A>, reducer:(agg:B, item:A) => Promise<B>|B, seed:B):Promise<B> {
-  let current:B = seed;
-  for await(const item of items){
-    current = await reducer(current, item);
-  }
-  return current;
-}
-
-export async function *aScan<A,B>(items:AsyncIterable<A>, reducer:(agg:B, item:A) => Promise<B>|B, seed:B):AsyncIterableIterator<B> {
-  let current:B = seed;
-  for await(const item of items){
-    current = await reducer(current, item);
-    yield current;
-  }
-}
-
 export function toArray<T>(obs:Observable<T>):Observable<T[]>{
   return obs.pipe(reduce((agg, item) => [...agg, item], []));
 }
@@ -105,16 +81,6 @@ export const cpx = {
       y === 0 ? 0 : y < 0 ? -1 : 1,
     ]
   }
-}
-
-export function uniq<T>(ts:T[]):T[]{
-  const output:T[] = []
-  for(const t of ts){
-    if(!output.includes(t)){
-      output.push(t)
-    }
-  }
-  return output
 }
 
 export function *permutations<T>(...ts:T[]):IterableIterator<T[]>{

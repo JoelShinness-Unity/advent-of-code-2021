@@ -122,7 +122,7 @@ function challenge2(lines:Observable<string>):Observable<unknown>{
 
 (() => {
   linesFromMock()
-  linesFromFile('../inputs/day-4.txt')
+  linesFromFile('./inputs/day-4.txt')
     .pipe(challenge2)
     .subscribe(console.log.bind(console))
 })();

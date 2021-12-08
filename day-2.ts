@@ -1,8 +1,8 @@
 import fs from 'fs';
 import path from 'path';
 import readline from 'readline';
-import { from, last, map, Observable, reduce, scan, takeLast } from 'rxjs';
-import { aMap } from './lib';
+import { from, map, Observable, reduce, scan } from 'rxjs';
+import { linesFromFile } from './lib';
 
 function linesFromMock():Observable<string>{
   const mock = `forward 5
@@ -12,28 +12,6 @@ up 3
 down 8
 forward 2`
   return from(mock.split('\n'));
-}
-
-function linesFromFile():Observable<string>{
-  return new Observable((subscriber) => {
-    const fileStream = fs.createReadStream(path.join(__dirname, './inputs/day-2.txt'));
-    const rl = readline.createInterface({
-      input: fileStream,
-      crlfDelay: Infinity
-    });
-    let completed = false;
-    (async () => {
-      for await (const line of rl){
-        if(completed) return;
-        subscriber.next(line)
-      }
-    })();
-    return () => {
-      completed = true;
-      subscriber.complete();
-      fileStream.close();
-    }
-  });
 }
 
 
@@ -69,7 +47,7 @@ function challenge2(lines:Observable<string>):Observable<unknown>{
 }
 
 (() => {
-  linesFromFile()
+  linesFromFile('./inputs/day-2.txt')
     .pipe(challenge2)
     .subscribe(x => { console.log(x); })
 })();

@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import readline from 'readline';
-import { aMap } from './lib';
+import { add, aMap } from './lib';
 
 async function *linesFromMock():AsyncIterableIterator<string>{
   const mock = `199
@@ -42,7 +42,7 @@ async function challenge1(lines:AsyncIterableIterator<string>){
 
   console.log(increases)
 }
-function add(a, b){ return a + b }
+
 async function challenge2(lines:AsyncIterableIterator<string>){
   let lastThree = [];
   let increases = 0;

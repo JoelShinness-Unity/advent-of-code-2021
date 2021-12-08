@@ -1,6 +1,4 @@
-import produce from 'immer';
-import { from, map, Observable, pairwise, scan, skipWhile, switchMap, take } from 'rxjs';
-import { linesFromFile, toArray } from './lib';
+import { from, Observable } from 'rxjs';
 
 function challenge1(lines:Observable<string>):Observable<unknown>{
   return lines.pipe(
