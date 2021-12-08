@@ -1,0 +1,25 @@
+{
+  "name": "2020",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "heyo": "ts-node heyo $1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^16.11.6",
+    "nodemon": "^2.0.15"
+  },
+  "dependencies": {
+    "axios": "^0.24.0",
+    "immer": "^9.0.7",
+    "moment-timezone": "^0.5.34",
+    "rxjs": "^7.4.0",
+    "ts-node": "^10.4.0",
+    "typescript": "^4.5.2"
+  }
+}
