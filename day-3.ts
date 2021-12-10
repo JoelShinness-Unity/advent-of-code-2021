@@ -1,5 +1,4 @@
-import { from, map, Observable, scan } from 'rxjs';
-import { toArray } from './lib';
+import { from, map, Observable, scan, toArray } from 'rxjs';
 
 
 function challenge1(lines:Observable<string>):Observable<unknown>{
@@ -29,7 +28,7 @@ function challenge1(lines:Observable<string>):Observable<unknown>{
 }
 function challenge2(lines:Observable<string>):Observable<unknown>{
   return lines.pipe(
-    toArray,
+    toArray(),
     map(arr => {
       let o2 = arr;
       let co2 = arr;

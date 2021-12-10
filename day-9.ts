@@ -1,4 +1,4 @@
-import { from, map, Observable, tap, toArray } from 'rxjs';
+import { from, map, Observable, toArray } from 'rxjs';
 import { add, linesFromFile } from './lib';
 import _ from 'lodash';
 

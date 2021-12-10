@@ -34,7 +34,7 @@ function challenge2(lines:Observable<string>):Observable<unknown>{
       const isSix = (seg) => !contains(seg, one);
       const isNine = (seg) => contains(seg, four);
       const [six, nine, zero] = (() => {
-        for(const [a, b, c] of permutations(...sixSeg)){
+        for(const [a, b, c] of permutations(sixSeg)){
           if(isSix(a) && isNine(b)){
             return [a, b, c];
           }
@@ -43,7 +43,7 @@ function challenge2(lines:Observable<string>):Observable<unknown>{
       const isThree = (seg) => contains(seg, one);
       const isTwo = (seg) => union(seg, four).length == 2;
       const [three, two, five] = (() => {
-        for(const [a, b, c] of permutations(...fiveSeg)){
+        for(const [a, b, c] of permutations(fiveSeg)){
           if(isThree(a) && isTwo(b)){
             return [a, b, c];
           }

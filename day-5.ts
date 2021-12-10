@@ -1,5 +1,5 @@
 import produce from 'immer';
-import { filter, from, map, Observable, scan, take, takeLast, tap } from 'rxjs';
+import { from, map, Observable, scan, takeLast, tap } from 'rxjs';
 import { linesFromFile } from './lib';
 
 

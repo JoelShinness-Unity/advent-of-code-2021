@@ -9,10 +9,6 @@ export async function *aMap<A,B>(items:AsyncIterable<A>, txfm:(a:A) => Promise<B
   }
 }
 
-export function toArray<T>(obs:Observable<T>):Observable<T[]>{
-  return obs.pipe(reduce((agg, item) => [...agg, item], []));
-}
-
 export function linesFromFile(fileName:string):Observable<string>{
   return new Observable((subscriber) => {
     const fileStream = fs.createReadStream(path.join(__dirname, fileName));
@@ -80,17 +76,24 @@ export const cpx = {
       x === 0 ? 0 : x < 0 ? -1 : 1,
       y === 0 ? 0 : y < 0 ? -1 : 1,
     ]
+  },
+  div([a, b]:Cpx, [c, d]:Cpx):Cpx {
+    const denom = c^c + d^d;
+    return [
+      (a * c + b * d) / denom,
+      (b * c - a * d) / denom
+    ]
   }
 }
 
-export function *permutations<T>(...ts:T[]):IterableIterator<T[]>{
+export function *permutations<T>(ts:T[]):IterableIterator<T[]>{
   if(ts.length === 1){
     yield ts;
     return;
   }
   for(let i = 0; i < ts.length; i++){
     let item = ts[i];
-    for(const rest of permutations(...ts.slice(0, i), ...ts.slice(i + 1))){
+    for(const rest of permutations([...ts.slice(0, i), ...ts.slice(i + 1)])){
       yield [item, ...rest];
     }
   }

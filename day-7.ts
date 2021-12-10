@@ -1,6 +1,5 @@
-import produce from 'immer';
-import { from, map, Observable, pairwise, scan, skipWhile, switchMap, take } from 'rxjs';
-import { add, linesFromFile, toArray } from './lib';
+import { from, map, Observable } from 'rxjs';
+import { add, linesFromFile } from './lib';
 
 function triangularNumber(n:number){
   return (n * (n + 1)) / 2

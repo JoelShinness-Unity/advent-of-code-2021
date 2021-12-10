@@ -1,6 +1,6 @@
 import produce from 'immer';
-import { from, map, Observable, pairwise, scan, skipWhile, switchMap, take } from 'rxjs';
-import { linesFromFile, toArray } from './lib';
+import { from, map, Observable, pairwise, scan, skipWhile, switchMap, take, toArray } from 'rxjs';
+import { linesFromFile } from './lib';
 
 type Cell = [number, boolean]
 type Row = Cell[];
@@ -37,7 +37,7 @@ function checkCard(card:Card):Row|undefined {
 
 function challenge1(lines:Observable<string>):Observable<unknown>{
   return lines.pipe(
-    toArray,
+    toArray(),
     map(([first, ...rest]) => {
       const cards:Card[] = []
       const callNumbers = first.split(',').map(Number);
@@ -71,7 +71,7 @@ function challenge1(lines:Observable<string>):Observable<unknown>{
 
 function challenge2(lines:Observable<string>):Observable<unknown>{
   return lines.pipe(
-    toArray,
+    toArray(),
     switchMap(([firstLine, ...rest]) => {
       const cards:Card[] = []
       const callNumbers = firstLine.split(',').map(Number);

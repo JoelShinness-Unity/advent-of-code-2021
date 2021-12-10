@@ -1,6 +1,5 @@
-import produce from 'immer';
-import { concatMap, first, from, map, Observable, pairwise, range, scan, skip, skipWhile, switchMap, take, tap } from 'rxjs';
-import { linesFromFile, toArray } from './lib';
+import { concatMap, from, map, Observable, range, scan, skip, skipWhile, take, tap } from 'rxjs';
+import { linesFromFile } from './lib';
 
 function challenge1(lines:Observable<string>):Observable<unknown>{
   return lines.pipe(
