@@ -45,7 +45,7 @@ fromNumbers.pipe(scan(add, 0)).subscribe(val => console.log(val));
 // CONSOLE: 6
 ```
 
-* `tap()` - This is just a debugging step that lets me put a console.log at a given step in the process.  I don't use this as much 
+* `tap()` - This is just a debugging step that lets me put a console.log at a given step in the process.  I don't use this as much because I'm usually debugging in real time, but when I get a result that's wrong, I'll go back and look at intermediate results with this.  If you ever have a `tap` in production code, you should probably get rid of it.
 * `toArray()` - sometimes the lines can be handled one-at-a-time, and sometimes you need to do honest-to-goodness array operations (like sorting).  This gathers up all the items into an array.  I avoid this where possible because I like lazy evaluation.  Also, this is pretty much equivalent to `reduce<T, T[]>((agg:T[], item:T) => [...agg, item], [])`.
 
 ## Heyo!!
