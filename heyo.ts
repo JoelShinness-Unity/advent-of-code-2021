@@ -5,7 +5,8 @@ import { argv, stderr } from 'process';
 import { sessionSecret } from './session.json';
 
 import momentTz from 'moment-timezone';
-import { exec } from 'child_process';
+import { exec, spawn } from 'child_process';
+import { chunk } from 'lodash';
 
 (async () => {
   const day = argv[2];
@@ -36,6 +37,20 @@ import { exec } from 'child_process';
     const fileCopies = await fs.readFile(path.join(__dirname, './day-xx.ts'));
     await fs.writeFile(filePath, fileCopies.toString().replace('xx', day));
   }
+  
   exec(`code ./day-${day}.ts`);
   exec(`open https://adventofcode.com/2021/day/${day}`);
+  await new Promise((resolve, reject) => {
+    const nodemon = spawn(`npx`, ['nodemon', `./day-${day}.ts`]);
+    nodemon.stdout.on("data", (chunk) => {
+      console.log(chunk.toString());
+    });
+    nodemon.stderr.on("data", (chunk) => {
+      console.error(chunk.toString())
+    })
+    nodemon.on('error', reject);
+    nodemon.on('close', resolve);
+    nodemon.on('exit', resolve);
+    nodemon.on('disconnect', resolve);
+  })
 })();
