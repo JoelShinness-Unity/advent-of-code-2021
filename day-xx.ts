@@ -1,4 +1,5 @@
 import { from, Observable } from 'rxjs';
+import _ from 'lodash';
 
 function challenge1(lines:Observable<string>):Observable<unknown>{
   return lines.pipe(
