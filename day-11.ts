@@ -1,4 +1,4 @@
-import { concatMap, from, map, Observable, range, scan, skipWhile, startWith, take, toArray } from 'rxjs';
+import { concatMap, from, map, Observable, range, scan, skipWhile, startWith, take, takeLast, toArray } from 'rxjs';
 
 import _, { takeWhile } from 'lodash';
 import produce from 'immer';
@@ -23,32 +23,32 @@ function *neighbors(grid:Grid, i:number, j:number):IterableIterator<[number, num
   }
 }
 function advance(grid:Grid):[Grid, number]{
-  let lastFlashesCount = -1;
-  grid = _.cloneDeep(grid);
-  const flashes = new Set<string>();
-  for(const [row, i] of withIdx(grid)){
-    for(let j = 0; j < row.length; j++){
-      row[j]++;
-    }
-  }
-  while(flashes.size > lastFlashesCount){
-    lastFlashesCount = flashes.size;
-    for(const [row, i] of withIdx(grid)){
+  return produce([grid, -1], draft => {
+    const flashes = new Set<string>();
+    for(const row of draft[0]){
       for(let j = 0; j < row.length; j++){
-        if(!flashes.has(`${i},${j}`) && row[j] > 9){
-          flashes.add(`${i},${j}`);
-          for(const [ni, nj] of neighbors(grid, i, j)){
-            grid[ni][nj]++;
+        row[j]++
+      }
+    }
+    while(flashes.size > draft[1]){
+      draft[1] = flashes.size;
+      for(const [row, i] of withIdx(draft[0])){
+        for(let j = 0; j < row.length; j++){
+          if(!flashes.has(`${i},${j}`) && row[j] > 9){
+            flashes.add(`${i},${j}`);
+            for(const [ni, nj] of neighbors(draft[0], i, j)){
+              draft[0][ni][nj]++;
+            }
           }
         }
       }
     }
-  }
-  for(const item of flashes){
-    const [i, j] = item.split(',').map(Number);
-    grid[i][j] = 0;
-  }
-  return [grid, flashes.size]
+    for(const item of flashes){
+      const [i, j] = item.split(',').map(Number);
+      draft[0][i][j] = 0;
+    }
+  })
+
 }
 function challenge1(lines:Observable<string>):Observable<unknown>{
   return lines.pipe(
@@ -63,7 +63,8 @@ function challenge1(lines:Observable<string>):Observable<unknown>{
         startWith<[Grid, number]>([grid, 0])
       );
     }),
-    map(([grid, count]) => ([grid.map(row => row.join('')), count]))
+    map(([, count]) => count),
+    takeLast(1)
   );
 }
 
@@ -81,7 +82,7 @@ function challenge2(lines:Observable<string>):Observable<unknown>{
     }),
     skipWhile(([grid]) => grid.some(row => row.some(cell => cell > 0))),
     take(1),
-    map(([grid, count]) => [grid.map(row => row.join('')).join('\n'), count])
+    map(([, count]) => count)
   );
 }
 
