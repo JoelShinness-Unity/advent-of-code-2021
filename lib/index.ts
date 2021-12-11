@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import readline from 'readline';
-import { Observable, reduce } from "rxjs";
+import { Observable } from "rxjs";
 
 export async function *aMap<A,B>(items:AsyncIterable<A>, txfm:(a:A) => Promise<B>|B):AsyncIterableIterator<B>{
   for await(const item of items){
@@ -46,7 +46,7 @@ export function add(a, b){
   return a + b;
 }
 
-type Cpx = [number, number];
+export type Cpx = [number, number];
 export const cpx = {
   add(first:Cpx, ...vectors:Cpx[]):Cpx{
     return vectors.reduce(([x1, y1], [x2, y2]) => [x1 + x2, y1 + y2], first)
