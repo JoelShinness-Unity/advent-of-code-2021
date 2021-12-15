@@ -1,7 +1,10 @@
 import fs from 'fs';
+import {enableMapSet} from 'immer';
 import path from 'path';
 import readline from 'readline';
 import { Observable } from "rxjs";
+
+enableMapSet();
 
 export async function *aMap<A,B>(items:AsyncIterable<A>, txfm:(a:A) => Promise<B>|B):AsyncIterableIterator<B>{
   for await(const item of items){
@@ -109,5 +112,28 @@ export function *combinations<T>(ts:T[]):IterableIterator<T[]> {
       }
     }
     yield output;
+  }
+}
+
+export function *buddy<T>(ts:T[], n:number):IterableIterator<T[]>{
+  if(ts.length < n) return;
+  for(let i = 0; i <= ts.length - n; i++){
+    yield ts.slice(i, i + n);
+  }
+}
+
+/**
+ * These next two deal with having a hash of strings with counts.
+ */
+export type CountMap<T extends string|number|symbol> = Record<T, bigint>;
+export function incrementCountMap<T extends string|number|symbol = string>(map:CountMap<T>, key:T, by:bigint = BigInt(1)){
+  if(by === BigInt(0)) return;
+  if(!map[key]) {
+    map[key] = by;
+    return;
+  }
+  map[key] += by;
+  if(map[key] === BigInt(0)){
+    delete map[key];
   }
 }
