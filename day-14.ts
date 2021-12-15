@@ -1,13 +1,11 @@
 import { concatMap, from, map, Observable, pairs, range, scan, skip, take, tap, toArray } from 'rxjs';
 import _ from 'lodash';
-import { incrementCountMap, linesFromFile } from './lib';
+import { incCountMap, linesFromFile } from './lib';
 import produce from 'immer';
 
 type Rule = [string, string]
 type Rule2 = [string, string[]]
 
-const makePairMemoized = _.memoize((x:number) => _.memoize((y:number) => [x, y]));
-const makePair = (a:number, b:number) => makePairMemoized(a)(b);
 function *buddy<T>(ts:T[], n:number):IterableIterator<T[]>{
   if(ts.length < n) return;
   for(let i = 0; i <= ts.length - n; i++){
@@ -32,9 +30,9 @@ function advance2(template:Record<string, bigint>, rules:Rule2[]){
   return produce(template, draft => {
     for(const [pair, [match1, match2]] of rules){
       if(template[pair]){
-        incrementCountMap(draft, match1, template[pair]);
-        incrementCountMap(draft, match2, template[pair]);
-        incrementCountMap(draft, pair, -template[pair]);
+        incCountMap(draft, match1, template[pair]);
+        incCountMap(draft, match2, template[pair]);
+        incCountMap(draft, pair, -template[pair]);
       }
     }
   })
@@ -96,7 +94,7 @@ function challenge2(lines:Observable<string>):Observable<unknown>{
         [...buddy(template.split(''), 2)]
           .map(x => x.join(''))
           .reduce((agg, pair):Record<string, bigint> => produce(agg, draft => {
-            incrementCountMap(draft, pair);
+            incCountMap(draft, pair);
           }), {}),
         rules.map((rule):Rule2 => {
         const results = /^([A-Z]{2}) -> ([A-Z])$/.exec(rule);
@@ -117,12 +115,12 @@ function challenge2(lines:Observable<string>):Observable<unknown>{
     take(1),
     map((x) => {
       const augmentedTemplate = produce(x, draft => {
-        incrementCountMap(draft, letters);
+        incCountMap(draft, letters);
       })
       const toSingleLetters = {};
       for(const key in augmentedTemplate){
         for(const letter of key){
-          incrementCountMap(toSingleLetters, letter, augmentedTemplate[key]);
+          incCountMap(toSingleLetters, letter, augmentedTemplate[key]);
         }
       }
       const [first, ...rest] = Object.values(toSingleLetters);
